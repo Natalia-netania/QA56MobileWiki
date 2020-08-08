@@ -89,6 +89,7 @@ public class SeachPageHelper extends PageBase{
     }
 
     public void enterNameReadList(String name){
+        nameOfThisList.clear();
         nameOfThisList.sendKeys(name);
         buttonOK.click();
     }
