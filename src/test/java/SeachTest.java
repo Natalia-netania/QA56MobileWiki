@@ -30,10 +30,7 @@ public void initTests(){
 
     @Test
     public void wikiTest()  {
-
-        //searchPage.waitUntilPageIsLoaded();
-        //WebElement element = driver.findElement(By.xpath("//*[contains(@text,'Search Wikipedia')]"));
-        //System.out.println("text of element:" + element.getText());
+    
        Assert.assertEquals("Search Wikipedia", searchPage.getSearchFieldText());
     }
 
