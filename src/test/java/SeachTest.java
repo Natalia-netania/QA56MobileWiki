@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import pages.CurrentArticlePageHelper;
 import pages.SeachPageHelper;
 import tests.TestBase;
+import util.DataProviders;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,12 +42,28 @@ public void initTests(){
         Assert.assertTrue(searchPage.existArticleInTheSearchResult("Selenium (software)"));
     }
     @Test
-    public void searchArticleAndOpen() throws InterruptedException {
+    public void searchArticleAndOpens() throws InterruptedException {
         searchPage.enterSearchText("Selenium");
         searchPage.openArticle("Selenium (software)");
         articleSeleniumSoftware.waitUntilPageIsLoaded();
+        //searchPage.enterSearchText(search);
+        //searchPage.openArticle(article);
         Assert.assertTrue(articleSeleniumSoftware.isOpenedCorrectly());
        //Thread.sleep((15000));
+    }
+
+    @Test
+    public void searthArticleOpenAndRotate(){
+        String search = "Selenium";
+        String article ="Selenium (software)";
+        searchPage.enterSearchText(search);
+        searchPage.openArticle(article);
+        articleSeleniumSoftware.waitUntilPageIsLoaded();
+        articleSeleniumSoftware.rotateScreenLandscape();
+        articleSeleniumSoftware.waitUntilPageIsLoaded();
+        articleSeleniumSoftware.rotateScreenPortrait();
+        articleSeleniumSoftware.waitUntilPageIsLoaded();
+        Assert.assertTrue(articleSeleniumSoftware.isOpenedCorrectly());
     }
 
    @Test
@@ -63,4 +80,72 @@ public void initTests(){
        //Thread.sleep((15000));
 
    }
+
+   @Test
+   public void searthArticleOpenAndBackground(){
+       String search = "Selenium";
+       String article ="Selenium (software)";
+       searchPage.enterSearchText(search);
+       searchPage.openArticle(article);
+       articleSeleniumSoftware.waitUntilPageIsLoaded();
+       articleSeleniumSoftware.runBackGround(2);
+       articleSeleniumSoftware.waitUntilPageIsLoaded();
+       Assert.assertTrue(articleSeleniumSoftware.isOpenedCorrectly());
+   }
+
+   @Test
+    public void  searchActicleOpenSwipe() throws InterruptedException {
+       searchPage.enterSearchText("Selenium");
+       searchPage.openArticle("Selenium (software)");
+       articleSeleniumSoftware.waitUntilPageIsLoaded();
+        articleSeleniumSoftware.swipeUp();
+       articleSeleniumSoftware.swipeUp();
+        Thread .sleep(10000);
+   }
+   @Test
+   public void  searchActicleOpenSwipeToFooter() throws InterruptedException {
+       searchPage.enterSearchText("Selenium");
+       searchPage.openArticle("Selenium (software)");
+       articleSeleniumSoftware.waitUntilPageIsLoaded();
+       articleSeleniumSoftware.swipeToFooter();
+       Assert.assertTrue(articleSeleniumSoftware.isEndOfArticle());
+       Thread .sleep(5000);
+   }
+
+   @Test
+    public void searchArticleAndOpenMenuArticle(){
+       String search = "Selenium";
+       String article ="Selenium (software)";
+       searchPage.enterSearchText(search);
+       searchPage.openArticleMenu(article);
+       try {
+           Thread.sleep(2000);
+       } catch (InterruptedException e) {
+           e.printStackTrace();
+       }
+       searchPage.closeArticleMenu();
+   }
+       //articleSeleniumSoftware.waitUntilPageIsLoaded();
+     //  articleSeleniumSoftware.openArticleMenu(article);
+
+@Test(dataProviderClass = DataProviders.class,dataProvider = "searchArticle")
+    public  void searchArticleAndOpen(String search, String article){
+
+   // String search = "Selenium";
+    //String article ="Selenium (software)";
+    searchPage.enterSearchText(search);
+    searchPage.openArticle(article);
+    articleSeleniumSoftware.waitUntilPageIsLoaded();
+    Assert.assertTrue(articleSeleniumSoftware.isOpenedCorrectly());
 }
+
+    @Test(dataProviderClass = DataProviders.class,
+            dataProvider = "searchArticlesFromFile")
+    public void searchArticles(String search, String article){
+        searchPage.enterSearchText(search);
+        searchPage.openArticle(article);
+        articleSeleniumSoftware.waitUntilPageIsLoaded();
+        Assert.assertTrue(articleSeleniumSoftware.isOpenedCorrectly());
+    }
+   }
+

@@ -1,5 +1,8 @@
 package pages;
 
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -41,6 +44,9 @@ public class SeachPageHelper extends PageBase{
     @FindBy(id = "org.wikipedia:id/page_list_item_title")
     WebElement titleArticle;
 
+    @FindBy(xpath = "//*[@class='android.widget.FrameLayout'][@content-desc = 'My lists']")
+    WebElement openMyListsButton;
+
     public SeachPageHelper(WebDriver driver){
         super(driver);
     }
@@ -52,15 +58,19 @@ public class SeachPageHelper extends PageBase{
     }
 
     public  String getSearchFieldText(){
+
         return searchField.getText();
     }
 
-    public void enterSearchText(String text) {
+    public SeachPageHelper enterSearchText(String text) {
+        System.out.println("x: " + searchField.getLocation().x);
+        System.out.println("y: " + searchField.getLocation().y);
         searchField.click();
         waitUntilElementIsClickable(searchInput,10);
         searchInput.sendKeys(text);
         waitUntilAllElementsAreVisible(articlesNameList,15);
         System.out.println("Articles quantity: " + articlesNameList.size());
+        return  this;
 
     }
 
@@ -72,14 +82,49 @@ public class SeachPageHelper extends PageBase{
         return  flag;
     }
 
-    public void openArticle(String article) {
+    public SeachPageHelper openArticle(String article) {
+
         driver.findElement(By.xpath(xPathArticleName(article))).click();
+        return this;
+    }
+
+    public SeachPageHelper openMyListsPage() {
+        openMyListsButton.click();
+        return this;
     }
 
     private String xPathArticleName(String article){
+
         return "//*[@text='" + article +"']";
     }
 
+    public void openArticleMenu(String article) {
+        AppiumDriver appDriver = (AppiumDriver)(driver);
+        TouchAction action = new TouchAction(appDriver);
+        WebElement articleName = driver
+                .findElement(By.xpath(xPathArticleName(article)));
+        int x = articleName.getLocation().x+3;
+        int y = articleName.getLocation().y+3;
+        action.longPress(PointOption.point(x,y))
+                .waitAction()
+                .release()
+                .perform();
+
+    }
+
+    public void closeArticleMenu() {
+        AppiumDriver appDriver = (AppiumDriver)(driver);
+        TouchAction action = new TouchAction(appDriver);
+        WebElement menuOpen = driver
+                .findElement(By.xpath("//*[@text='Open']"));
+        int x = (int)(menuOpen.getLocation().x *0.5);
+        int y = menuOpen.getLocation().y;
+        action.press(PointOption.point(x,y))
+                .waitAction()
+                .release()
+                .perform();
+    }
+//my programs
     public void openReadList() {
         buttonCreateReadList.click();
     }
@@ -95,7 +140,6 @@ public class SeachPageHelper extends PageBase{
     }
 
    public void waitUntilElementIsLoaded() {
-
         waitUntilElementIsVisible(buttonCreateReadList,40);
     }
 
