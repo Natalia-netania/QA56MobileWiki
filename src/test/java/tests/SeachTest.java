@@ -1,3 +1,5 @@
+package tests;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
@@ -22,7 +24,7 @@ public class SeachTest extends TestBase {
 SeachPageHelper searchPage;
 CurrentArticlePageHelper articleSeleniumSoftware;
 
-@BeforeMethod
+@BeforeMethod(alwaysRun = true)
 public void initTests(){
     searchPage = PageFactory.initElements(driver,SeachPageHelper.class);
     articleSeleniumSoftware = new CurrentArticlePageHelper(driver, "Selenium (software)");
@@ -112,7 +114,7 @@ public void initTests(){
        Thread .sleep(5000);
    }
 
-   @Test
+   @Test(groups ={"smoke","regression"})
     public void searchArticleAndOpenMenuArticle(){
        String search = "Selenium";
        String article ="Selenium (software)";

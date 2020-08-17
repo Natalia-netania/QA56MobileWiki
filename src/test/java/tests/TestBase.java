@@ -18,7 +18,7 @@ public class TestBase {
     SeachPageHelper seachPageHelper;
     CurrentArticleTests currentArticleTests;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUp() throws MalformedURLException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
@@ -41,7 +41,7 @@ public class TestBase {
 
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown(){
         driver.quit();
     }
